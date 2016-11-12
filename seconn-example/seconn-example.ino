@@ -41,9 +41,24 @@ void c_seconn_data_received(void *src, size_t bytes) {
     Serial.println("<");
 }
 
+void printHex(void *vdata, size_t len) {
+    char alphabet[] = "0123456789ABCDEF";
+    uint8_t *data = (uint8_t*)vdata;
+    Serial.print("0x");
+    for(int i = 0; i < len; i++) {
+        Serial.print(alphabet[(data[i] & 0xF0) >> 4]);
+        Serial.print(alphabet[(data[i] & 0x0F)]);
+    }
+}
+
 void c_seconn_state_changed(seconn_state prev, seconn_state cur) {
     Serial.print("State:");
     Serial.println(cur);
+    if(cur == 4) {
+        Serial.print("Pubkey of other side is: ");
+        printHex(sconn.public_key, 64);
+        Serial.println("");
+    }
 }
 
 void setup() {
@@ -53,6 +68,12 @@ void setup() {
     Serial.println("S!");
     seconn_init(&sconn, c_seconn_write_data, c_seconn_data_received,
     c_seconn_state_changed, &RNG, 0);
+
+    Serial.print("Our pubkey is: ");
+    uint8_t pubkey[64];
+    seconn_get_public_key(&sconn, pubkey);
+    printHex(pubkey, 64);
+    Serial.println("");
 }
 
 char c;
