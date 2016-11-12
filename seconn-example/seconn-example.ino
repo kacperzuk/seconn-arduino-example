@@ -9,7 +9,7 @@
 
 SoftwareSerial Bluetooth = SoftwareSerial(btRxPin, btTxPin);
 
-struct SeConn seconn;
+struct seconn sconn;
 
 void btinit() {
     Serial.begin(9600);
@@ -41,7 +41,7 @@ void c_seconn_data_received(void *src, size_t bytes) {
     Serial.println("<");
 }
 
-void c_seconn_state_changed(State prev, State cur) {
+void c_seconn_state_changed(seconn_state prev, seconn_state cur) {
     Serial.print("State:");
     Serial.println(cur);
 }
@@ -51,7 +51,7 @@ void setup() {
     while(!Serial);
     btinit();
     Serial.println("S!");
-    seconn_init(&seconn, c_seconn_write_data, c_seconn_data_received,
+    seconn_init(&sconn, c_seconn_write_data, c_seconn_data_received,
     c_seconn_state_changed, &RNG, 0);
 }
 
@@ -65,6 +65,6 @@ void loop() {
     }
 
     if(i > 0) {
-        seconn_new_data(&seconn, buff, i);
+        seconn_new_data(&sconn, buff, i);
     }
 }
