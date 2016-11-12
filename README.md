@@ -17,3 +17,5 @@ You need XM-15B Bluetooth module for this example attached to pins 8 (Rx) and 9 
 Copy libraries/ and seconn-example/ directories to ~/Arduino. Go to ~/Arduino/seconn-example and run `arduino seconn-example.ino`.
 
 This sketch will bring up Bluetooth with name `seconn`. It'll then wait until something connects and send HelloRequest frame. That will initiate setting up secure connection. All state changes and data from EncryptedData frames will be sent through Serial.
+
+![Image of example terminal output](http://i.imgur.com/PlVBXfD.png)
